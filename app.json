@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Mastermind",
+    "slug": "Mastermind",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/mastermind.png",
+    "scheme": "mastermind",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/mastermind.png",
+        "backgroundColor": "#1a1a2e"
+      },
+      "splash": {
+        "image": "./assets/images/mastermind.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#1a1a2e"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/mastermind.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "765fdb29-a058-41ae-aab1-36d7c72fdd27"
+      }
+    }
+  }
+}
