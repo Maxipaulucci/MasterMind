@@ -35,6 +35,10 @@ export default function GameScreen() {
     router.push({ pathname: '/ranking', params: { dificultad: difficulty } });
   };
 
+  const handleEstadisticas = () => {
+    router.push('/estadisticas');
+  };
+
   const handleDifficulty = () => {
     setShowDifficulty(true);
   };
@@ -202,6 +206,13 @@ export default function GameScreen() {
             
             <TouchableOpacity style={styles.button} onPress={handleRanking}>
               <Text style={styles.buttonText}>Ranking</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Botón de estadísticas */}
+          <View style={styles.statsButtonRow}>
+            <TouchableOpacity style={styles.button} onPress={handleEstadisticas}>
+              <Text style={styles.buttonText}>Estadísticas</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -434,6 +445,10 @@ const styles = StyleSheet.create({
   bottomButtonsRow: {
     flexDirection: 'row',
     gap: 20,
+  },
+  statsButtonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   button: {
     backgroundColor: '#2E86AB',
