@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { Audio } from 'expo-av';
+import { Audio as ExpoAudio } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Dimensions, FlatList, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -66,6 +66,9 @@ export default function PlayScreen() {
   const { playerName } = usePlayer();
   const dificultadParam = Array.isArray(initialDifficulty) ? initialDifficulty[0] : initialDifficulty;
   const nombreJugador = typeof playerName === 'string' ? playerName : '';
+  
+  // Log para verificar el nombre del jugador
+  console.log('Nombre del jugador en play.tsx:', nombreJugador);
   const [difficulty, setDifficulty] = useState(dificultadParam || 'medio');
   const [numeroSecreto, setNumeroSecreto] = useState<number[]>([]);
   const [intentos, setIntentos] = useState<any[]>([]);
@@ -83,10 +86,26 @@ export default function PlayScreen() {
   const numberRevealOpacity = useSharedValue(1);
 
   // Audio
-  const soundRef = useRef<Audio.Sound>();
+  const soundRef = useRef<ExpoAudio.Sound>();
 
   useEffect(() => {
-    loadVictorySound();
+    const setupAudio = async () => {
+      try {
+        await ExpoAudio.setAudioModeAsync({
+          allowsRecordingIOS: false,
+          staysActiveInBackground: false,
+          playsInSilentModeIOS: true,
+          shouldDuckAndroid: true,
+          playThroughEarpieceAndroid: false,
+        });
+        await loadVictorySound();
+      } catch (error) {
+        console.log('Error setting up audio:', error);
+      }
+    };
+    
+    setupAudio();
+    
     return () => {
       if (soundRef.current) {
         soundRef.current.unloadAsync();
@@ -96,11 +115,10 @@ export default function PlayScreen() {
 
   const loadVictorySound = async () => {
     try {
-      // TODO: Agregar archivo de sonido de victoria
-      // const { sound } = await Audio.Sound.createAsync(
-      //   require('../../assets/sounds/victory.mp3')
-      // );
-      // soundRef.current = sound;
+      const { sound } = await ExpoAudio.Sound.createAsync(
+        require('../../assets/sounds/victory.mp3')
+      );
+      soundRef.current = sound;
     } catch (error) {
       console.log('Error loading sound:', error);
     }
@@ -108,10 +126,9 @@ export default function PlayScreen() {
 
   const playVictorySound = async () => {
     try {
-      // TODO: Reproducir sonido cuando se agregue el archivo
-      // if (soundRef.current) {
-      //   await soundRef.current.replayAsync();
-      // }
+      if (soundRef.current) {
+        await soundRef.current.replayAsync();
+      }
     } catch (error) {
       console.log('Error playing sound:', error);
     }

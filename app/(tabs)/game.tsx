@@ -1,18 +1,26 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Modal, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { usePlayer } from '../../context/PlayerContext';
 
 export default function GameScreen() {
   const { playerName: initialPlayerName } = useLocalSearchParams();
   const router = useRouter();
-  const [playerName, setPlayerName] = useState(initialPlayerName || '');
+  const { playerName, setPlayerName } = usePlayer();
   const [showRules, setShowRules] = useState(false);
   const [showDifficulty, setShowDifficulty] = useState(false);
   const [difficulty, setDifficulty] = useState('medio'); // Predeterminado: medio
   const [rulesDifficulty, setRulesDifficulty] = useState('medio'); // Para las reglas en el modal
   const [showChangeName, setShowChangeName] = useState(false);
   const [newName, setNewName] = useState('');
+  
+  // Inicializar el nombre del jugador desde los parámetros de la URL solo una vez
+  useEffect(() => {
+    if (initialPlayerName && !playerName) {
+      setPlayerName(initialPlayerName);
+    }
+  }, [initialPlayerName, playerName, setPlayerName]);
   
   const handleJugar = () => {
     router.push({ pathname: '/play', params: { difficulty } });
@@ -146,6 +154,7 @@ export default function GameScreen() {
       return;
     }
     setPlayerName(newName.trim());
+    console.log('Nombre cambiado en game.tsx:', newName.trim());
     setShowChangeName(false);
   };
   const handleCancelChangeName = () => {

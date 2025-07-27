@@ -21,7 +21,8 @@
         "resizeMode": "contain",
         "backgroundColor": "#1a1a2e"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.maxipaulucci.Mastermind"
     },
     "web": {
       "bundler": "metro",
@@ -30,7 +31,8 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "expo-av"
     ],
     "experiments": {
       "typedRoutes": true
