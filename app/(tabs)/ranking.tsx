@@ -5,7 +5,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ranking from '../../components/Ranking';
-import { cargarRanking } from '../../data/rankingData';
+import { cargarRanking, limpiarRanking } from '../../data/rankingData';
 
 const dificultades = [
   { key: 'facil', label: 'Fácil', color: '#4CAF50' },
@@ -32,6 +32,16 @@ export default function RankingScreen() {
   const rankingFiltrado = rankingLocal.filter((item) => item.dificultad === dificultad);
 
   const [loading, setLoading] = useState(true);
+
+  const handleReiniciarRanking = async () => {
+    try {
+      await limpiarRanking();
+      setRankingLocal([]);
+      setLoading(false);
+    } catch (error) {
+      console.log('Error reiniciando ranking:', error);
+    }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -91,6 +101,13 @@ export default function RankingScreen() {
                       <Text style={[styles.tabText, { color: '#fff' }]}>{dif.label}</Text>
                     </TouchableOpacity>
                   ))}
+                </View>
+
+                {/* Botón Reiniciar Ranking */}
+                <View style={styles.reiniciarContainer}>
+                  <TouchableOpacity style={styles.reiniciarButton} onPress={handleReiniciarRanking}>
+                    <Text style={styles.reiniciarButtonText}>Reiniciar Ranking</Text>
+                  </TouchableOpacity>
                 </View>
               </>
             )}
@@ -192,5 +209,29 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     letterSpacing: 1,
+  },
+  reiniciarContainer: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  reiniciarButton: {
+    backgroundColor: '#ff4757',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  reiniciarButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 }); 
