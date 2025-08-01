@@ -158,7 +158,7 @@ export default function GameScreen() {
       return;
     }
     setPlayerName(newName.trim());
-    console.log('Nombre cambiado en game.tsx:', newName.trim());
+    console.log('Nombre cambiado a:', newName.trim());
     setShowChangeName(false);
   };
   const handleCancelChangeName = () => {

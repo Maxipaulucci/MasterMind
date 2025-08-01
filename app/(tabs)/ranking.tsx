@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ranking from '../../components/Ranking';
 import { cargarRanking, limpiarRanking } from '../../data/rankingData';
 
@@ -34,13 +34,29 @@ export default function RankingScreen() {
   const [loading, setLoading] = useState(true);
 
   const handleReiniciarRanking = async () => {
-    try {
-      await limpiarRanking();
-      setRankingLocal([]);
-      setLoading(false);
-    } catch (error) {
-      console.log('Error reiniciando ranking:', error);
-    }
+    Alert.alert(
+      'Reiniciar Ranking',
+      '¿Estás seguro de que quieres reiniciar el ranking? Esta acción no se puede deshacer.',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Confirmar',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await limpiarRanking();
+              setRankingLocal([]);
+              setLoading(false);
+            } catch (error) {
+              console.log('Error reiniciando ranking:', error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   useFocusEffect(
@@ -90,11 +106,10 @@ export default function RankingScreen() {
                   {dificultades.map((dif) => (
                     <TouchableOpacity
                       key={dif.key}
-                      style={[styles.tabButton,
+                      style={[
+                        styles.tabButton,
                         { backgroundColor: dif.color },
-                        dificultad === dif.key
-                          ? { borderColor: '#111', borderWidth: 3 }
-                          : { borderColor: 'transparent', borderWidth: 0 }
+                        dificultad === dif.key && styles.selectedTab
                       ]}
                       onPress={() => setDificultad(dif.key)}
                     >
@@ -168,12 +183,20 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     alignItems: 'center',
     minWidth: 70,
+    borderWidth: 0,
+    paddingHorizontal: 8,
+    justifyContent: 'center',
   },
   tabText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
+  },
+  selectedTab: {
+    borderWidth: 2,
+    borderColor: '#111',
+    borderRadius: 19
   },
   backButton: {
     flexDirection: 'row',
@@ -215,7 +238,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   reiniciarButton: {
-    backgroundColor: '#ff4757',
+    backgroundColor: '#6c757d',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 25,

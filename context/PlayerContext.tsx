@@ -34,7 +34,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     try {
       await AsyncStorage.setItem('playerName', name);
       setPlayerName(name);
-      console.log('Nombre del jugador actualizado en contexto:', name);
     } catch (error) {
       console.log('Error saving player name:', error);
       setPlayerName(name); // Aún actualizar el estado local si falla el guardado

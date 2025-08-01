@@ -67,8 +67,6 @@ export default function PlayScreen() {
   const dificultadParam = Array.isArray(initialDifficulty) ? initialDifficulty[0] : initialDifficulty;
   const nombreJugador = typeof playerName === 'string' ? playerName : '';
   
-  // Log para verificar el nombre del jugador
-  console.log('Nombre del jugador en play.tsx:', nombreJugador);
   const [difficulty, setDifficulty] = useState(dificultadParam || 'medio');
   const [numeroSecreto, setNumeroSecreto] = useState<number[]>([]);
   const [intentos, setIntentos] = useState<any[]>([]);
@@ -167,7 +165,7 @@ export default function PlayScreen() {
     console.log('numero secreto:', nuevoNumero.join(''));
   };
 
-  // Nueva función para generar el número según reglas
+  // función para generar el número según reglas
   function generarNumeroPersonalizado(sinRepetir: boolean, sinCero: boolean): number[] {
     let numeros: number[] = [];
     let digitos = sinCero ? [1,2,3,4,5,6,7,8,9] : [0,1,2,3,4,5,6,7,8,9];
@@ -222,21 +220,21 @@ export default function PlayScreen() {
     playVictorySound();
     setShowConfetti(true);
     setShowFinalButtons(false);
-    // Animación del número revelándose (más llamativa)
+    // Animación del número revelándose 
     numberRevealScale.value = withSequence(
       withTiming(1.5, { duration: 350 }),
       withSpring(0.8, { damping: 5, stiffness: 80 }),
       withSpring(1.2, { damping: 8, stiffness: 120 }),
       withSpring(1, { damping: 10, stiffness: 100 })
     );
-    // Animación de victoria (más rebote y escala)
+    // Animación de victoria
     victoryScale.value = withSequence(
       withTiming(1.4, { duration: 250 }),
       withSpring(0.9, { damping: 6, stiffness: 90 }),
       withSpring(1.1, { damping: 8, stiffness: 120 }),
       withSpring(1, { damping: 12, stiffness: 120 })
     );
-    // Ocultar confeti después de 4 segundos y mostrar botones
+    
     setTimeout(() => {
       setShowConfetti(false);
       setShowFinalButtons(true);
